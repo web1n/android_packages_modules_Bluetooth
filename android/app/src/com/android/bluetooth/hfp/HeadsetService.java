@@ -2098,8 +2098,9 @@ public class HeadsetService extends ProfileService {
             if (connectionState != BluetoothProfile.STATE_CONNECTED) {
                 return false;
             }
-            // Currently we support only "+ANDROID".
-            if (!command.equals(BluetoothHeadset.VENDOR_RESULT_CODE_COMMAND_ANDROID)) {
+            // Currently we support only "+ANDROID" and "+XIAOMI".
+            if (!command.equals(BluetoothHeadset.VENDOR_RESULT_CODE_COMMAND_ANDROID)
+                    && !command.equals(BluetoothHeadset.VENDOR_SPECIFIC_HEADSET_EVENT_XIAOMI)) {
                 Log.w(TAG, "Disallowed unsolicited result code command: " + command);
                 return false;
             }
