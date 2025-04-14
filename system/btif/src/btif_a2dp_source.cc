@@ -918,11 +918,28 @@ static void btif_a2dp_source_audio_handle_timer(void) {
 /// Callback invoked by the encoder for reading PCM audio data from the
 /// Bluetooth Audio HAL. Runs on the source worker thread.
 static uint32_t btif_a2dp_source_read_callback(uint8_t* p_buf, uint32_t len) {
+  uint32_t bytes_read = 0;
+  uint32_t bytes_offset = 0;
+  uint32_t len_read = len;
+  uint32_t timeout_cnt = 0;
+
   if (!btif_a2dp_source_cb.sw_audio_is_encoding) {
     return 0;
   }
 
-  uint32_t bytes_read = bluetooth::audio::a2dp::read(p_buf, len);
+  while (true) {
+    bytes_read = bluetooth::audio::a2dp::read(p_buf, len);
+
+    // Savitech LHDC -- Low Latency Mode
+    bytes_offset += bytes_read;
+    len_read -= bytes_read;
+    timeout_cnt++;
+    if (len_read <= 0 || timeout_cnt >= 5) {
+        bytes_read = bytes_offset;
+        break;
+    }
+    usleep(1000);
+  }
 
   if (bytes_read < len) {
     log::warn("UNDERFLOW: ONLY READ {} BYTES OUT OF {}", bytes_read, len);
