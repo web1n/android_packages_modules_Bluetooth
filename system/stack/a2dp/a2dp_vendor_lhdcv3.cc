@@ -43,7 +43,6 @@ using namespace bluetooth;
 
 typedef struct {
   btav_a2dp_codec_config_t *_codec_config_;
-  btav_a2dp_codec_config_t *_codec_capability_;
   btav_a2dp_codec_config_t *_codec_local_capability_;
   btav_a2dp_codec_config_t *_codec_selectable_capability_;
   btav_a2dp_codec_config_t *_codec_user_config_;
@@ -1392,10 +1391,6 @@ static void A2DP_UpdateFeatureToSpecLhdcV3(tA2DP_CODEC_CONFIGS_PACK* cfgsPtr,
     {
       SETUP_A2DP_SPEC(cfgsPtr->_codec_config_, toSpec, hasFeature, value);
     }
-  if(toCodecCfg & A2DP_LHDC_TO_A2DP_CODEC_CAP_)
-    {
-      SETUP_A2DP_SPEC(cfgsPtr->_codec_capability_, toSpec, hasFeature, value);
-    }
   if(toCodecCfg & A2DP_LHDC_TO_A2DP_CODEC_LOCAL_CAP_)
     {
       SETUP_A2DP_SPEC(cfgsPtr->_codec_local_capability_, toSpec, hasFeature, value);
@@ -1489,7 +1484,6 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
 
   // Save the internal state
   btav_a2dp_codec_config_t saved_codec_config = codec_config_;
-  btav_a2dp_codec_config_t saved_codec_capability = codec_capability_;
   btav_a2dp_codec_config_t saved_codec_selectable_capability =
       codec_selectable_capability_;
   btav_a2dp_codec_config_t saved_codec_user_config = codec_user_config_;
@@ -1505,7 +1499,6 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
 
   tA2DP_CODEC_CONFIGS_PACK allCfgPack;
   allCfgPack._codec_config_ = &codec_config_;
-  allCfgPack._codec_capability_ = &codec_capability_;
   allCfgPack._codec_local_capability_ = &codec_local_capability_;
   allCfgPack._codec_selectable_capability_ = &codec_selectable_capability_;
   allCfgPack._codec_user_config_ = &codec_user_config_;
@@ -1565,8 +1558,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
   }
   if (isLLEnabled) {
     codec_selectable_capability_.codec_specific_2 |= A2DP_LHDC_LL_ENABLED;
-    codec_capability_.codec_specific_2 |= A2DP_LHDC_LL_ENABLED;
-  }
+      }
   //result_config_cie.isLLSupported = sink_info_cie.isLLSupported;
   log::info( " : isLLSupported, Sink(0x{:02x}) Set(0x{:02x}), result(0x{:02x})",
             sink_info_cie.isLLSupported,
@@ -1586,29 +1578,25 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
     case BTAV_A2DP_CODEC_SAMPLE_RATE_44100:
       if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_44100) {
         result_config_cie.sampleRate = A2DP_LHDC_SAMPLING_FREQ_44100;
-        codec_capability_.sample_rate = codec_user_config_.sample_rate;
-        codec_config_.sample_rate = codec_user_config_.sample_rate;
+                codec_config_.sample_rate = codec_user_config_.sample_rate;
       }
       break;
     case BTAV_A2DP_CODEC_SAMPLE_RATE_48000:
       if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_48000) {
         result_config_cie.sampleRate = A2DP_LHDC_SAMPLING_FREQ_48000;
-        codec_capability_.sample_rate = codec_user_config_.sample_rate;
-        codec_config_.sample_rate = codec_user_config_.sample_rate;
+                codec_config_.sample_rate = codec_user_config_.sample_rate;
       }
       break;
     case BTAV_A2DP_CODEC_SAMPLE_RATE_88200:
       if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_88200) {
         result_config_cie.sampleRate = A2DP_LHDC_SAMPLING_FREQ_88200;
-        codec_capability_.sample_rate = codec_user_config_.sample_rate;
-        codec_config_.sample_rate = codec_user_config_.sample_rate;
+                codec_config_.sample_rate = codec_user_config_.sample_rate;
       }
       break;
     case BTAV_A2DP_CODEC_SAMPLE_RATE_96000:
       if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_96000) {
         result_config_cie.sampleRate = A2DP_LHDC_SAMPLING_FREQ_96000;
-        codec_capability_.sample_rate = codec_user_config_.sample_rate;
-        codec_config_.sample_rate = codec_user_config_.sample_rate;
+                codec_config_.sample_rate = codec_user_config_.sample_rate;
       }
       break;
     case BTAV_A2DP_CODEC_SAMPLE_RATE_16000:
@@ -1616,8 +1604,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
     case BTAV_A2DP_CODEC_SAMPLE_RATE_176400:
     case BTAV_A2DP_CODEC_SAMPLE_RATE_192000:
     case BTAV_A2DP_CODEC_SAMPLE_RATE_NONE:
-      codec_capability_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_NONE;
-      codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_NONE;
+            codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_NONE;
       break;
   }
 
@@ -1650,14 +1637,10 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
 
       // Compute the common capability
       if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_44100)
-        codec_capability_.sample_rate |= BTAV_A2DP_CODEC_SAMPLE_RATE_44100;
-      if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_48000)
-        codec_capability_.sample_rate |= BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-      if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_88200)
-        codec_capability_.sample_rate |= BTAV_A2DP_CODEC_SAMPLE_RATE_88200;
-      if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_96000)
-        codec_capability_.sample_rate |= BTAV_A2DP_CODEC_SAMPLE_RATE_96000;
-
+              if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_48000)
+              if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_88200)
+              if (sampleRate & A2DP_LHDC_SAMPLING_FREQ_96000)
+        
       // No user preference - try the codec audio config
       if (select_audio_sample_rate(&codec_audio_config_, sampleRate,
                                    &result_config_cie, &codec_config_)) {
@@ -1715,22 +1698,19 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
     case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16:
       if (bits_per_sample & BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16) {
         result_config_cie.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
-        codec_capability_.bits_per_sample = codec_user_config_.bits_per_sample;
-        codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
+                codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
       }
       break;
     case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24:
       if (bits_per_sample & BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24) {
         result_config_cie.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
-        codec_capability_.bits_per_sample = codec_user_config_.bits_per_sample;
-        codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
+                codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
       }
       break;
     case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_32:
     case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE:
       result_config_cie.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
-      codec_capability_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
-      codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
+            codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
       break;
   }
 
@@ -1750,10 +1730,8 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
 
       // Compute the common capability
       if (bits_per_sample & BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16)
-        codec_capability_.bits_per_sample |= BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
-      if (bits_per_sample & BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24)
-        codec_capability_.bits_per_sample |= BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
-
+              if (bits_per_sample & BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24)
+        
       // No user preference - the the codec audio config
       if (select_audio_bits_per_sample(&codec_audio_config_, bits_per_sample,
                                        &result_config_cie, &codec_config_)) {
@@ -1795,18 +1773,15 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
   codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
   switch (codec_user_config_.channel_mode) {
     case BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO:
-      codec_capability_.channel_mode = codec_user_config_.channel_mode;
-      codec_config_.channel_mode = codec_user_config_.channel_mode;
+            codec_config_.channel_mode = codec_user_config_.channel_mode;
       break;
     case BTAV_A2DP_CODEC_CHANNEL_MODE_MONO:
     case BTAV_A2DP_CODEC_CHANNEL_MODE_NONE:
-      codec_capability_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
-      codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
+            codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_NONE;
       break;
   }
   codec_selectable_capability_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
-  codec_capability_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
-  codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
+    codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
   if (codec_config_.channel_mode == BTAV_A2DP_CODEC_CHANNEL_MODE_NONE) {
     log::error(" : codec_config_.channel_mode != BTAV_A2DP_CODEC_CHANNEL_MODE_NONE or BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO"
         );
@@ -2395,7 +2370,6 @@ tA2DP_STATUS A2dpCodecConfigLhdcV3::setCodecConfig(const uint8_t* p_peer_codec_i
 fail:
   // Restore the internal state
   codec_config_ = saved_codec_config;
-  codec_capability_ = saved_codec_capability;
   codec_selectable_capability_ = saved_codec_selectable_capability;
   codec_user_config_ = saved_codec_user_config;
   codec_audio_config_ = saved_codec_audio_config;
