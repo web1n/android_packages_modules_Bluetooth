@@ -1869,25 +1869,25 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
   case BTAV_A2DP_CODEC_SAMPLE_RATE_44100:
     if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_44100) {
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_44100;
-            codec_config_.sample_rate = codec_user_config_.sample_rate;
+      codec_config_.sample_rate = codec_user_config_.sample_rate;
     }
     break;
   case BTAV_A2DP_CODEC_SAMPLE_RATE_48000:
     if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_48000) {
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
-            codec_config_.sample_rate = codec_user_config_.sample_rate;
+      codec_config_.sample_rate = codec_user_config_.sample_rate;
     }
     break;
   case BTAV_A2DP_CODEC_SAMPLE_RATE_96000:
     if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_96000) {
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_96000;
-            codec_config_.sample_rate = codec_user_config_.sample_rate;
+      codec_config_.sample_rate = codec_user_config_.sample_rate;
     }
     break;
   case BTAV_A2DP_CODEC_SAMPLE_RATE_192000:
     if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_192000) {
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_192000;
-            codec_config_.sample_rate = codec_user_config_.sample_rate;
+      codec_config_.sample_rate = codec_user_config_.sample_rate;
     }
     break;
   case BTAV_A2DP_CODEC_SAMPLE_RATE_16000:
@@ -1895,7 +1895,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
   case BTAV_A2DP_CODEC_SAMPLE_RATE_88200:
   case BTAV_A2DP_CODEC_SAMPLE_RATE_176400:
   case BTAV_A2DP_CODEC_SAMPLE_RATE_NONE:
-        codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_NONE;
+    codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_NONE;
     break;
   }
 
@@ -1918,12 +1918,6 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
     }
     // Ignore follows if codec config is setup, otherwise pick a best one from default rules
 
-    // Compute the common capability
-    if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_44100)
-          if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_48000)
-          if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_96000)
-          if (sampleRate & A2DP_LHDCV5_SAMPLING_FREQ_192000)
-      
     // No user preference - try the codec audio config
     if (select_audio_sample_rate(&codec_audio_config_, sampleRate,
         &result_config_cie, &codec_config_)) {
@@ -1975,24 +1969,24 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
   case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16:
     if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_16) {
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_16;
-            codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
+      codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
     }
     break;
   case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24:
     if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_24) {
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_24;
-            codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
+      codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
     }
     break;
   case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_32:
     if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_32) {
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_32;
-            codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
+      codec_config_.bits_per_sample = codec_user_config_.bits_per_sample;
     }
     break;
   case BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE:
     result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_NS;
-        codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
+    codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_NONE;
     break;
   }
 
@@ -2013,11 +2007,6 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
     }
     // Ignore follows if codec config is setup, otherwise pick a best one from default rules
 
-    // Compute the common capability
-    if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_16)
-          if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_24)
-          if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_32)
-      
     // No user preference - the the codec audio config
     if (select_audio_bits_per_sample(&codec_audio_config_, bitsPerSample,
         &result_config_cie, &codec_config_)) {
@@ -2060,7 +2049,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
   // Select the channel mode
   codec_user_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
   codec_selectable_capability_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
-    codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
+  codec_config_.channel_mode = BTAV_A2DP_CODEC_CHANNEL_MODE_STEREO;
   log::info( ": channelMode = Only supported stereo");
 
   // Update frameLenType
@@ -2471,7 +2460,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
     // set (48KHz sample rate) when AR
     if (codec_user_config_.sample_rate != BTAV_A2DP_CODEC_SAMPLE_RATE_48000) {
       codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-            codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+      codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
       log::info( ": set 48KHz sample Rate for running AR");
     }
@@ -2485,7 +2474,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
       if (result_config_cie.hasFeatureLLESS96K == false) {
         // only have capability of 48KHz lossless raw mode (not have 96KHz lossless)
         codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-                codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+        codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
         result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
         log::info( ": (lossless raw) set 48KHz sample rate");
       } else {
@@ -2494,7 +2483,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
             codec_user_config_.sample_rate != BTAV_A2DP_CODEC_SAMPLE_RATE_96000) {
           //  => set default 48KHz when user-configured sample rate is not supported
           codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-                    codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+          codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
           result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
           log::info( ": (lossless raw) default 48KHz sample rate");
         } else {
@@ -2510,7 +2499,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
         // only have capability of 48KHz lossless (not have 96KHz lossless)
         //   => fixed 48KHz
         codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-                codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+        codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
         result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
         log::info( ": (lossless) fixed 48KHz sample rate");
       } else {
@@ -2520,7 +2509,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
             codec_user_config_.sample_rate != BTAV_A2DP_CODEC_SAMPLE_RATE_96000) {
           //  => set default 48KHz when user-configured sample rate is not supported
           codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-                    codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+          codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
           result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
           log::info( ": (lossless) default 48KHz sample rate");
         } else {
@@ -2543,7 +2532,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
     if (codec_user_config_.bits_per_sample != BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16 &&
         codec_user_config_.bits_per_sample != BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24) {
       codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
-            codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
+      codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_24;
       log::info( ": set 24 bits per sample for running AR");
     }
@@ -2559,13 +2548,13 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
         if (bitsPerSample & A2DP_LHDCV5_BIT_FMT_24) {
           // unsupported bitrate, use 24bit as default
           codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
-                    codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
+          codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
           result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_24;
           log::info( ": (lossless-24bit): use default 24 mode");
         } else {
           // unsupported bitrate, use 16bit as default
           codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
-                    codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
+          codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
           result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_16;
           log::info( ": (lossless-24bit): use default 16 bit mode");
         }
@@ -2580,7 +2569,7 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
     } else {
       // hasFeatureLLESS24Bit not supported, always use 16bit
       codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
-            codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
+      codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_16;
       log::info( ": (lossless-16bit): 16 bit mode only");
     }
@@ -2597,17 +2586,17 @@ tA2DP_STATUS A2dpCodecConfigLhdcV5Base::setCodecConfig(const uint8_t* p_peer_cod
         log::info( ": (lossless 96KHz) : 24bit OK");
       } else {
         codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
-                codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
+        codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_24;
         result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_24;
         log::info( ": (lossless 96KHz) : unsupported bit depth but 24bit capable, reconfigure to 24bit");
       }
     } else {
       codec_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
-            codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
+      codec_user_config_.sample_rate = BTAV_A2DP_CODEC_SAMPLE_RATE_48000;
       result_config_cie.sampleRate = A2DP_LHDCV5_SAMPLING_FREQ_48000;
 
       codec_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
-            codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
+      codec_user_config_.bits_per_sample = BTAV_A2DP_CODEC_BITS_PER_SAMPLE_16;
       result_config_cie.bitsPerSample = A2DP_LHDCV5_BIT_FMT_16;
       log::info( ": (lossless 96KHz) : 16 and 24bit not capable, reconfigure to 48KHz 16bit");
     }
