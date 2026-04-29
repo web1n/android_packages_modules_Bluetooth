@@ -1171,6 +1171,13 @@ public class BluetoothAssignedNumbers {
      */
     public static final int XIAOMI = 0x038F;
 
+    /**
+     * OPPO, Inc.
+     *
+     * @hide
+     */
+    public static final int OPPO = 0x079A;
+
     /*
      * You can't instantiate one of these.
      */
